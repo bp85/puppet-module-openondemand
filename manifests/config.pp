@@ -150,6 +150,7 @@ class openondemand::config {
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
+    mode    => '0644',
     source  => $openondemand::_apps_config_source,
     recurse => true,
     purge   => true,
@@ -159,6 +160,7 @@ class openondemand::config {
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
+    mode    => '0644',
     source  => $openondemand::_locales_config_source,
     recurse => true,
     purge   => true,
@@ -169,12 +171,12 @@ class openondemand::config {
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
+    mode    => '0644',
     source  => $openondemand::_announcements_config_source,
     recurse => $openondemand::announcements_purge,
     purge   => $openondemand::announcements_purge,
     force   => $openondemand::announcements_purge,
   }
-
 
   $openondemand::public_files_repo_paths.each |$path| {
     $basename = basename($path)
@@ -207,25 +209,58 @@ class openondemand::config {
     show_diff => false,
     notify    => Exec['ood-portal-generator-generate'],
   }
-  $generate = '/opt/ood/ood-portal-generator/bin/generate -o /etc/ood/config/ood-portal.conf -d /etc/ood/dex/config.yaml'
+  if $openondemand::generator_insecure {
+    $insecure_arg = ' --insecure'
+  } else {
+    $insecure_arg = ''
+  }
+  $generate = "/opt/ood/ood-portal-generator/bin/generate -o /etc/ood/config/ood-portal.conf -d /etc/ood/dex/config.yaml${insecure_arg}"
   exec { 'ood-portal-generator-generate':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     command     => $generate,
     refreshonly => true,
+    logoutput   => true,
     before      => ::Apache::Custom_config['ood-portal'],
   }
   exec { 'ood-portal-generator-generate-refresh':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => $generate,
-    creates => '/etc/ood/config/ood-portal.conf',
-    before  => ::Apache::Custom_config['ood-portal'],
+    path      => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command   => $generate,
+    creates   => '/etc/ood/config/ood-portal.conf',
+    logoutput => true,
+    before    => ::Apache::Custom_config['ood-portal'],
   }
 
-  include ::apache::params
+  include apache
+  include apache::params
+  if $facts['os']['family'] == 'Debian' {
+    $apache_custom_config_confdir = $apache::vhost_dir
+    $apache_custom_config_verify = false
+
+    file { 'ood-portal.conf symlink':
+      ensure  => 'link',
+      path    => "${apache::vhost_enable_dir}/ood-portal.conf",
+      target  => "${apache::vhost_dir}/ood-portal.conf",
+      owner   => 'root',
+      group   => $apache::params::group,
+      mode    => '0640',
+      require => Apache::Custom_config['ood-portal'],
+      notify  => Class['apache::service'],
+    }
+  } else {
+    $apache_custom_config_confdir = $apache::confd_dir
+    $apache_custom_config_verify = true
+  }
+  if $apache::params::verify_command =~ Array {
+    $apache_verify_command = join($apache::params::verify_command, ' ')
+  } else {
+    $apache_verify_command = $apache::params::verify_command
+  }
   ::apache::custom_config { 'ood-portal':
     source         => '/etc/ood/config/ood-portal.conf',
     filename       => 'ood-portal.conf',
-    verify_command => "${apache::params::verify_command} || { /bin/rm -f /etc/ood/config/ood-portal.conf; exit 1; }",
+    verify_command => "${apache_verify_command} || { /bin/rm -f /etc/ood/config/ood-portal.conf; exit 1; }",
+    confdir        => $apache_custom_config_confdir,
+    verify_config  => $apache_custom_config_verify,
     show_diff      => false,
     owner          => 'root',
     group          => $apache::params::group,
@@ -238,7 +273,7 @@ class openondemand::config {
       owner   => 'ondemand-dex',
       group   => 'ondemand-dex',
       mode    => '0600',
-      require => Exec['ood-portal-generator-generate']
+      require => Exec['ood-portal-generator-generate'],
     }
   }
 
@@ -307,5 +342,4 @@ class openondemand::config {
     mode   => '0750',
     group  => $openondemand::nginx_log_group,
   }
-
 }
