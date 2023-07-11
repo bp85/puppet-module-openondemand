@@ -1,18 +1,15 @@
-# @summary Manage Open OnDemand repos
+# @summary Manage Open OnDemand RPM repos
 # @api private
-class openondemand::repo {
+class openondemand::repo::rpm {
   assert_private()
 
   if $openondemand::repo_nightly {
-    $nightly_ensure = 'present'
     exec { 'makecache ondemand-web-nightly':
       path        => '/usr/bin:/bin:/usr/sbin:/sbin',
       command     => "${facts['package_provider']} -q makecache -y --disablerepo='*' --enablerepo='ondemand-web-nightly'",
       refreshonly => true,
       subscribe   => Yumrepo['ondemand-web-nightly'],
     }
-  } else {
-    $nightly_ensure = 'absent'
   }
 
   yumrepo { 'ondemand-web':
@@ -25,10 +22,11 @@ class openondemand::repo {
     metadata_expire => '1',
     priority        => $openondemand::repo_priority,
     exclude         => $openondemand::repo_exclude,
+    proxy           => $openondemand::repo_proxy,
   }
 
   yumrepo { 'ondemand-web-nightly':
-    ensure          => $nightly_ensure,
+    ensure          => $openondemand::nightly_ensure,
     descr           => 'Open OnDemand Web Repo - Nightly',
     baseurl         => $openondemand::repo_nightly_baseurl,
     enabled         => '1',
@@ -37,10 +35,11 @@ class openondemand::repo {
     gpgkey          => $openondemand::repo_gpgkey,
     metadata_expire => '1',
     priority        => $openondemand::repo_priority,
+    proxy           => $openondemand::repo_proxy,
   }
 
   # Work around a bug where 'dnf module list' is not executed with -y
-  if versioncmp($openondemand::osmajor, '8') >= 0 {
+  if versioncmp($openondemand::osmajor, '8') == 0 {
     exec { 'dnf makecache ondemand-web':
       path        => '/usr/bin:/bin:/usr/sbin:/sbin',
       command     => "dnf -q makecache -y --disablerepo='*' --enablerepo='ondemand-web'",
@@ -53,9 +52,11 @@ class openondemand::repo {
     }
   }
 
-  if versioncmp($openondemand::osmajor, '7') <= 0 and $openondemand::manage_dependency_repos {
+  if $openondemand::manage_epel {
     contain epel
+  }
 
+  if versioncmp($openondemand::osmajor, '7') <= 0 and $openondemand::manage_dependency_repos {
     if $facts['os']['name'] == 'CentOS' and versioncmp($openondemand::osmajor, '7') == 0 {
       file { '/etc/yum.repos.d/ondemand-centos-scl.repo':
         ensure => 'absent',
@@ -79,17 +80,16 @@ class openondemand::repo {
     }
   }
 
-  if versioncmp($openondemand::osmajor, '8') >= 0 and $openondemand::manage_dependency_repos {
+  if versioncmp($openondemand::osmajor, '8') == 0 and $openondemand::manage_dependency_repos {
     package { 'nodejs':
-      ensure      => '12',
+      ensure      => '14',
       enable_only => true,
       provider    => 'dnfmodule',
     }
     package { 'ruby':
-      ensure      => '2.7',
+      ensure      => '3.0',
       enable_only => true,
       provider    => 'dnfmodule',
     }
   }
-
 }

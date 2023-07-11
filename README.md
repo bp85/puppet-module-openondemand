@@ -19,6 +19,7 @@ Manage [Open OnDemand](http://openondemand.org/) installation and configuration.
 
 The following are the versions of this module and the supported versions of Open OnDemand:
 
+* Module 3.x and 4.x supports Open OnDemand 3.x
 * Module 2.x supports Open OnDemand 2.x
 * Module 1.x supports Open OnDemand 1.18.x
 * Module <= 0.12.0 supports Open OnDemand <= 1.7
@@ -32,12 +33,12 @@ All configuration can be done through the `openondemand` class. Example configur
 include openondemand
 ```
 
-Install specific versions of OnDemand from 2.0 repo with OpenID Connect support.
+Install specific versions of OnDemand from 3.0 repo with OpenID Connect support.
 
 ```yaml
-openondemand::repo_release: '2.0'
-openondemand::ondemand_package_ensure: "2.0.0-1.el7"
-openondemand::mod_auth_openidc_ensure: "2.4.5-1.el7"
+openondemand::repo_release: '3.0'
+openondemand::ondemand_package_ensure: "3.0.0-1.el7"
+openondemand::mod_auth_openidc_ensure: "3.4.5-1.el7"
 ```
 
 Configure OnDemand SSL certs
@@ -248,6 +249,20 @@ openondemand::nginx_stage_pun_custom_env:
   OOD_XDMOD_HOST: http://xdmod.osc.edu
 ```
 
+Add Support Ticket configuration:
+
+```yaml
+openondemand::confs:
+  support_ticket:
+    data:
+      support_ticket:
+        email:
+          from: noreply@example.com
+          to: support@example.com
+```
+
+The above example will create `/etc/ood/config/ondemand.d/support_ticket.yml` with the YAML defined in `data` parameter.
+
 Install additional apps of specific versions as well as hide some apps
 
 ```yaml
@@ -269,6 +284,14 @@ openondemand::install_apps:
     ensure: present
     git_repo: https://github.com/OSC/bc_osc_jupyter
     git_revision: v0.20.0
+```
+
+Install additional apps from Puppet sources:
+
+```yaml
+openondemand::install_apps:
+  bc_osc_rstudio_server:
+    source: puppet:///modules/profile/bc_osc_rstudio_server
 ```
 
 Add usr apps with a default group
@@ -339,7 +362,8 @@ openondemand::confs:
 
 This module has been tested on:
 
-* CentOS 7 x86_64
-* RedHat 7 x86_64
-* CentOS 8 x86_64
-* RedHat 8 x86_64
+* RedHat/CentOS 7 x86_64
+* RedHat/Rocky Linux/Alma Linux 8 x86_64
+* RedHat/Rocky Linux/Alma Linux 9 x86_64
+* Ubuntu 18.04 x86_64
+* Ubuntu 20.04 x86_64
