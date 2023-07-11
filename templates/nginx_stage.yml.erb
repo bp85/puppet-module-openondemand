@@ -128,60 +128,36 @@ nginx_file_upload_max: '<%= scope['openondemand::nginx_stage_nginx_file_upload_m
 # Root location of per-user NGINX configs
 #
 #pun_config_path: '/var/lib/nginx/config/puns/%{user}.conf'
-<%- if scope['openondemand::nginx_stage_pun_config_path'] %>
-pun_config_path: '<%= scope['openondemand::nginx_stage_pun_config_path'] %>'
-<%- end -%>
 
 # Root location of per-user NGINX tmp dirs
 #
 #pun_tmp_root: '/var/lib/nginx/tmp/%{user}'
-<%- if scope['openondemand::nginx_stage_pun_tmp_root'] %>
-pun_tmp_root: '<%= scope['openondemand::nginx_stage_pun_tmp_root'] %>'
-<%- end -%>
 
 # Path to the per-user NGINX access log
 #
 #pun_access_log_path: '/var/log/nginx/%{user}/access.log'
-<%- if scope['openondemand::nginx_stage_pun_access_log_path'] %>
-pun_access_log_path: '<%= scope['openondemand::nginx_stage_pun_access_log_path'] %>'
-<%- end -%>
 
 # Path to the per-user NGINX error log
 #
 #pun_error_log_path: '/var/log/nginx/%{user}/error.log'
-<%- if scope['openondemand::nginx_stage_pun_error_log_path'] %>
-pun_error_log_path: '<%= scope['openondemand::nginx_stage_pun_error_log_path'] %>'
-<%- end -%>
 
 # Path to the per-user NGINX pid file
 #
 #pun_pid_path: '/var/run/nginx/%{user}/passenger.pid'
-<%- if scope['openondemand::nginx_stage_pun_pid_path'] %>
-pun_pid_path: '<%= scope['openondemand::nginx_stage_pun_pid_path'] %>'
-<%- end -%>
 
 # Path to the per-user NGINX socket file
 #
 #pun_socket_path: '/var/run/nginx/%{user}/passenger.sock'
-<%- if scope['openondemand::nginx_stage_pun_socket_path'] %>
-pun_socket_path: '<%= scope['openondemand::nginx_stage_pun_socket_path'] %>'
-<%- end -%>
 
 # Path to the local filesystem root where the per-user NGINX process serves
 # files from for the user making use of the sendfile feature in NGINX
 #
 #pun_sendfile_root: '/'
-<%- if scope['openondemand::nginx_stage_pun_sendfile_root'] %>
-pun_sendfile_root: '<%= scope['openondemand::nginx_stage_pun_sendfile_root'] %>'
-<%- end -%>
 
 # The internal URI used to access the local filesystem for downloading files
 # from the apps (not accessible directly by client browser)
 #
 #pun_sendfile_uri: '/sendfile'
-<%- if scope['openondemand::nginx_stage_pun_sendfile_uri'] %>
-pun_sendfile_uri: '<%= scope['openondemand::nginx_stage_pun_sendfile_uri'] %>'
-<%- end -%>
 
 # List of hashes helping define wildcard app config locations. These are the
 # arguments for {#app_config_path}.
