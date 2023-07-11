@@ -68,12 +68,14 @@ The following parameters are available in the `openondemand` class:
 * [`ondemand_package_ensure`](#-openondemand--ondemand_package_ensure)
 * [`ondemand_dex_package_ensure`](#-openondemand--ondemand_dex_package_ensure)
 * [`mod_auth_openidc_ensure`](#-openondemand--mod_auth_openidc_ensure)
+* [`mod_auth_mellon_ensure`](#-openondemand--mod_auth_mellon_ensure)
 * [`install_apps`](#-openondemand--install_apps)
 * [`declare_apache`](#-openondemand--declare_apache)
 * [`apache_scls`](#-openondemand--apache_scls)
 * [`generator_insecure`](#-openondemand--generator_insecure)
 * [`listen_addr_port`](#-openondemand--listen_addr_port)
 * [`servername`](#-openondemand--servername)
+* [`proxy_server`](#-openondemand--proxy_server)
 * [`server_aliases`](#-openondemand--server_aliases)
 * [`ssl`](#-openondemand--ssl)
 * [`logroot`](#-openondemand--logroot)
@@ -123,6 +125,7 @@ The following parameters are available in the `openondemand` class:
 * [`oidc_settings`](#-openondemand--oidc_settings)
 * [`dex_uri`](#-openondemand--dex_uri)
 * [`dex_config`](#-openondemand--dex_config)
+* [`mellon_config`](#-openondemand--mellon_config)
 * [`web_directory`](#-openondemand--web_directory)
 * [`nginx_log_group`](#-openondemand--nginx_log_group)
 * [`nginx_stage_clean_cron_schedule`](#-openondemand--nginx_stage_clean_cron_schedule)
@@ -271,6 +274,14 @@ mod_auth_openidc package ensure
 
 Default value: `'present'`
 
+##### <a name="-openondemand--mod_auth_mellon_ensure"></a>`mod_auth_mellon_ensure`
+
+Data type: `String`
+
+mod_auth_mellon package ensure
+
+Default value: `'present'`
+
 ##### <a name="-openondemand--install_apps"></a>`install_apps`
 
 Data type: `Hash`
@@ -320,6 +331,14 @@ Data type: `Optional[String]`
 ood_portal.yml servername
 
 Default value: `undef`
+
+##### <a name="-openondemand--proxy_server"></a>`proxy_server`
+
+Data type: `Optional[String]`
+
+ood_portal.yml proxy_server
+
+Default value: ``undef``
 
 ##### <a name="-openondemand--server_aliases"></a>`server_aliases`
 
@@ -713,6 +732,14 @@ Dex configuration Hash
 
 Default value: `{}`
 
+##### <a name="-openondemand--mellon_config"></a>`mellon_config`
+
+Data type: `Hash`
+
+Mellon configuration Hash for Overwrite
+
+Default value: `{}`
+
 ##### <a name="-openondemand--web_directory"></a>`web_directory`
 
 Data type: `Stdlib::Absolutepath`
@@ -1068,7 +1095,7 @@ Manage Open OnDemand dev app
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 openondemand::app::dev { 'user1': }
@@ -1140,7 +1167,7 @@ Manage Open OnDemand user app
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 openondemand::app::usr { 'user1':
@@ -1856,7 +1883,7 @@ Manage Open OnDemand app
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 openondemand::install::app { 'bc_osc_foo':
