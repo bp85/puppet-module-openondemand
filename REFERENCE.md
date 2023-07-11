@@ -65,11 +65,13 @@ The following parameters are available in the `openondemand` class:
 * [`ondemand_package_ensure`](#ondemand_package_ensure)
 * [`ondemand_dex_package_ensure`](#ondemand_dex_package_ensure)
 * [`mod_auth_openidc_ensure`](#mod_auth_openidc_ensure)
+* [`mod_auth_mellon_ensure`](#mod_auth_mellon_ensure)
 * [`install_apps`](#install_apps)
 * [`declare_apache`](#declare_apache)
 * [`apache_scls`](#apache_scls)
 * [`listen_addr_port`](#listen_addr_port)
 * [`servername`](#servername)
+* [`proxy_server`](#proxy_server)
 * [`ssl`](#ssl)
 * [`logroot`](#logroot)
 * [`use_rewrites`](#use_rewrites)
@@ -117,6 +119,7 @@ The following parameters are available in the `openondemand` class:
 * [`oidc_state_max_number_of_cookies`](#oidc_state_max_number_of_cookies)
 * [`oidc_settings`](#oidc_settings)
 * [`dex_config`](#dex_config)
+* [`mellon_config`](#mellon_config)
 * [`web_directory`](#web_directory)
 * [`nginx_log_group`](#nginx_log_group)
 * [`nginx_stage_clean_cron_schedule`](#nginx_stage_clean_cron_schedule)
@@ -249,6 +252,14 @@ mod_auth_openidc package ensure
 
 Default value: `'present'`
 
+##### <a name="mod_auth_mellon_ensure"></a>`mod_auth_mellon_ensure`
+
+Data type: `String`
+
+mod_auth_mellon package ensure
+
+Default value: `'present'`
+
 ##### <a name="install_apps"></a>`install_apps`
 
 Data type: `Hash`
@@ -286,6 +297,14 @@ Default value: ``undef``
 Data type: `Optional[String]`
 
 ood_portal.yml servername
+
+Default value: ``undef``
+
+##### <a name="proxy_server"></a>`proxy_server`
+
+Data type: `Optional[String]`
+
+ood_portal.yml proxy_server
 
 Default value: ``undef``
 
@@ -665,6 +684,14 @@ Dex configuration Hash
 
 Default value: `{}`
 
+##### <a name="mellon_config"></a>`mellon_config`
+
+Data type: `Hash`
+
+Mellon configuration Hash for Overwrite
+
+Default value: `{}`
+
 ##### <a name="web_directory"></a>`web_directory`
 
 Data type: `Stdlib::Absolutepath`
@@ -1020,7 +1047,7 @@ Manage Open OnDemand dev app
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 openondemand::app::dev { 'user1': }
@@ -1092,7 +1119,7 @@ Manage Open OnDemand user app
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 openondemand::app::usr { 'user1':
@@ -1800,7 +1827,7 @@ Manage Open OnDemand app
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 openondemand::install::app { 'bc_osc_foo':
