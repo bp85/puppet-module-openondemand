@@ -62,7 +62,7 @@ class openondemand::apache {
     'mellon': {
       ::apache::mod { 'auth_mellon':
         package        => "${package_prefix}mod_auth_mellon",
-        package_ensure => $openondemand::mod_auth_openidc_ensure,
+        package_ensure => $openondemand::mod_auth_mellon_ensure,
       }
     }
     default: {}

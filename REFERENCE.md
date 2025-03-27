@@ -134,7 +134,9 @@ The following parameters are available in the `openondemand` class:
 * [`oidc_settings`](#-openondemand--oidc_settings)
 * [`dex_uri`](#-openondemand--dex_uri)
 * [`dex_config`](#-openondemand--dex_config)
+* [`mellon_dir`](#-openondemand--mellon_dir)
 * [`mellon_config`](#-openondemand--mellon_config)
+* [`mellon_manage_metadata`](#-openondemand--mellon_manage_metadata)
 * [`web_directory`](#-openondemand--web_directory)
 * [`nginx_log_group`](#-openondemand--nginx_log_group)
 * [`nginx_stage_clean_cron_schedule`](#-openondemand--nginx_stage_clean_cron_schedule)
@@ -813,6 +815,14 @@ Dex configuration Hash
 
 Default value: `{}`
 
+##### <a name="-openondemand--mellon_dir"></a>`mellon_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+Path to Mellon congiration and files directory
+
+Default value: `${apache::httpd_dir}/mellon`
+
 ##### <a name="-openondemand--mellon_config"></a>`mellon_config`
 
 Data type: `Hash`
@@ -820,6 +830,14 @@ Data type: `Hash`
 Mellon configuration Hash for Overwrite
 
 Default value: `{}`
+
+##### <a name="-openondemand--mellon_manage_metadata"></a>`mellon_manage_metadata`
+
+Data type: `Boolean`
+
+Mellon Metadata managed by puppet or not
+
+Default value: `true`
 
 ##### <a name="-openondemand--web_directory"></a>`web_directory`
 

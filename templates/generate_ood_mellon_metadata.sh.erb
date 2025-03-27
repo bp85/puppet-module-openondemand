@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MELLON_DIR="<%= scope['apache::params::httpd_dir'] -%>/mellon"
+MELLON_DIR="<%= scope['openondemand::mellon_dir'] -%>"
 
 [ -d ${MELLON_DIR} ] || mkdir ${MELLON_DIR}
 
