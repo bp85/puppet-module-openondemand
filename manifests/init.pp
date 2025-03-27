@@ -361,9 +361,9 @@ class openondemand (
     'MellonEnable' => 'auth',
     'MellonEndpointPath' => '/mellon',
   },
-  Optional[Hash] $mellon_config = {}
+  Optional[Hash] $mellon_config = {},
   # Merge default config with updated configs
-  Optional[Hash] $mellon_merged_config = merge($mellon_default_config, $mellon_config)
+  Optional[Hash] $mellon_merged_config = merge($mellon_default_config, $mellon_config),
 
   # Misc configs
   Stdlib::Absolutepath $web_directory = '/var/www/ood',

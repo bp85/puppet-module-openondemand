@@ -307,7 +307,7 @@ class openondemand::config {
       content => template('openondemand/auth_mellon.conf.erb'),
       owner   => 'root',
       group   => 'root',
-      mode    => '0755'
+      mode    => '0755',
     }
     file { '/usr/local/bin/mellon_ood_metadata.sh':
       content => template('openondemand/generate_ood_mellon_metadata.sh.erb'),
