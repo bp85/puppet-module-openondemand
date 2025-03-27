@@ -142,8 +142,12 @@
 #   Dex URI if put behind Apache reverse proxy
 # @param dex_config
 #   Dex configuration Hash
+# @param mellon_dir
+#   Apache Mellon Directory for storing configs/certs
 # @param mellon_config
 #   Additional Mellon override config for apache
+# @param mellon_manage_metadata
+#   Whether to manage mellon metadata or not
 # @param web_directory
 #   Path to main web directory for OnDemand
 # @param nginx_log_group
@@ -320,11 +324,13 @@ class openondemand (
   Openondemand::Dex_config $dex_config = {},
 
   # Mellon Configs
+  Stdlib::Absolutepath $mellon_dir = "${apache::httpd_dir}/mellon",
+  Blloean mellon_manage_metadata = true,
   Optional[Hash] $mellon_default_config = {
-    'MellonSPPrivateKeyFile' => '/etc/httpd/mellon/mellon.key',
-    'MellonSPCertFile' => '/etc/httpd/mellon/mellon.cer',
-    'MellonSPMetadataFile' => '/etc/httpd/mellon/mellon_metadata.xml',
-    'MellonIdPMetadataFile' => '/etc/httpd/mellon/idp_metadata.xml',
+    'MellonSPPrivateKeyFile' => "${mellon_dir}/mellon.key",
+    'MellonSPCertFile' => "${mellon_dir}/mellon.cer",
+    'MellonSPMetadataFile' => "${mellon_dir}/mellon_metadata.xml",
+    'MellonIdPMetadataFile' => "${mellon_dir}/idp_metadata.xml",
     'MellonEnable' => 'auth',
     'MellonEndpointPath' => '/mellon',
   },
