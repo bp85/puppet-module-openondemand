@@ -1,6 +1,6 @@
 {
   "name": "osc-openondemand",
-  "version": "4.1.0",
+  "version": "7.1.0",
   "author": "osc",
   "summary": "Open OnDemand Puppet module",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.25.0 < 10.0.0"
+      "version_requirement": ">= 9.0.0 < 10.0.0"
     },
     {
       "name": "puppetlabs/apt",
@@ -18,7 +18,7 @@
     },
     {
       "name": "puppetlabs/apache",
-      "version_requirement": ">= 5.2.0 < 11.0.0"
+      "version_requirement": ">= 5.2.0 < 13.0.0"
     },
     {
       "name": "puppetlabs/vcsrepo",
@@ -26,32 +26,26 @@
     },
     {
       "name": "saz/sudo",
-      "version_requirement": ">= 3.0.0 <8.0.0"
+      "version_requirement": ">= 3.0.0 <9.0.0"
     },
     {
       "name": "puppet/augeasproviders_shellvar",
-      "version_requirement": ">= 2.0.0 <6.0.0"
+      "version_requirement": ">= 5.0.0 <7.0.0"
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 3.0.0 < 7.0.0"
+      "version_requirement": ">= 3.0.0 < 8.0.0"
     },
     {
       "name": "puppet/systemd",
-      "version_requirement": ">= 0.4.0 <6.0.0"
+      "version_requirement": ">= 0.4.0 <8.0.0"
     },
     {
       "name": "puppet/epel",
-      "version_requirement": ">= 4.1.0 <5.0.0"
+      "version_requirement": ">= 4.1.0 <6.0.0"
     }
   ],
   "operatingsystem_support": [
-    {
-      "operatingsystem": "CentOS",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
     {
       "operatingsystem": "Rocky",
       "operatingsystemrelease": [
@@ -69,16 +63,28 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7",
         "8",
         "9"
+      ]
+    },
+    {
+      "operatingsystem": "Amazon",
+      "operatingsystemrelease": [
+        "2023"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "20.04",
-        "22.04"
+        "22.04",
+        "24.04"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "12"
       ]
     }
   ],
@@ -93,7 +99,7 @@
     "hpc",
     "gateway"
   ],
-  "pdk-version": "2.1.0",
+  "pdk-version": "2.7.1",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-gcb8e84f"
+  "template-ref": "heads/master-0-gd2de99e"
 }

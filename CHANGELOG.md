@@ -2,6 +2,135 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.1.0](https://github.com/osc/puppet-module-openondemand/tree/v7.1.0) (2025-01-21)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v7.0.0...v7.1.0)
+
+### Added
+
+- Added configuration to enable/disable maintenance with Puppet [\#170](https://github.com/OSC/puppet-module-openondemand/pull/170) ([abujeda](https://github.com/abujeda))
+
+## [v7.0.0](https://github.com/osc/puppet-module-openondemand/tree/v7.0.0) (2025-01-09)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v6.1.0...v7.0.0)
+
+### Changed
+
+- Support OnDemand 4.0 [\#169](https://github.com/OSC/puppet-module-openondemand/pull/169) ([treydock](https://github.com/treydock))
+
+## [v6.1.0](https://github.com/osc/puppet-module-openondemand/tree/v6.1.0) (2024-12-11)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v6.0.0...v6.1.0)
+
+### Added
+
+- Add oidc\_crypto\_passphrase parameter [\#168](https://github.com/OSC/puppet-module-openondemand/pull/168) ([treydock](https://github.com/treydock))
+
+## [v6.0.0](https://github.com/osc/puppet-module-openondemand/tree/v6.0.0) (2024-10-16)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v5.2.0...v6.0.0)
+
+### Changed
+
+- Require stdlib \>= 9.x [\#165](https://github.com/OSC/puppet-module-openondemand/pull/165) ([treydock](https://github.com/treydock))
+
+## [v5.2.0](https://github.com/osc/puppet-module-openondemand/tree/v5.2.0) (2024-10-16)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v5.1.0...v5.2.0)
+
+### Added
+
+- Support Ubuntu 24.04 [\#163](https://github.com/OSC/puppet-module-openondemand/pull/163) ([treydock](https://github.com/treydock))
+- Remove EL7 support [\#161](https://github.com/OSC/puppet-module-openondemand/pull/161) ([treydock](https://github.com/treydock))
+
+## [v5.1.0](https://github.com/osc/puppet-module-openondemand/tree/v5.1.0) (2024-09-06)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v5.0.1...v5.1.0)
+
+### Added
+
+- Added support to configure the GPG check for the OnDemand repo [\#159](https://github.com/OSC/puppet-module-openondemand/pull/159) ([abujeda](https://github.com/abujeda))
+
+### Fixed
+
+- Don't wrap yaml lines for confs [\#160](https://github.com/OSC/puppet-module-openondemand/pull/160) ([mattmix](https://github.com/mattmix))
+
+## [v5.0.1](https://github.com/osc/puppet-module-openondemand/tree/v5.0.1) (2024-04-17)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v5.0.0...v5.0.1)
+
+### Fixed
+
+- Allow undef for logout\_uri and logout\_redirect [\#157](https://github.com/OSC/puppet-module-openondemand/pull/157) ([abujeda](https://github.com/abujeda))
+
+## [v5.0.0](https://github.com/osc/puppet-module-openondemand/tree/v5.0.0) (2024-02-13)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.5.0...v5.0.0)
+
+### Changed
+
+- Support OnDemand 3.1 [\#154](https://github.com/OSC/puppet-module-openondemand/pull/154) ([treydock](https://github.com/treydock))
+
+## [v4.5.0](https://github.com/osc/puppet-module-openondemand/tree/v4.5.0) (2024-01-25)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.4.1...v4.5.0)
+
+### Added
+
+- Added support for files to configure cluster definitions [\#156](https://github.com/OSC/puppet-module-openondemand/pull/156) ([abujeda](https://github.com/abujeda))
+
+## [v4.4.1](https://github.com/osc/puppet-module-openondemand/tree/v4.4.1) (2024-01-25)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.4.0...v4.4.1)
+
+### Fixed
+
+- Fix Apache user for Ubuntu and Debian [\#155](https://github.com/OSC/puppet-module-openondemand/pull/155) ([treydock](https://github.com/treydock))
+
+## [v4.4.0](https://github.com/osc/puppet-module-openondemand/tree/v4.4.0) (2024-01-21)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.3.1...v4.4.0)
+
+### Added
+
+- Added support to add module files into the OnDemand public folder [\#151](https://github.com/OSC/puppet-module-openondemand/pull/151) ([abujeda](https://github.com/abujeda))
+
+## [v4.3.1](https://github.com/osc/puppet-module-openondemand/tree/v4.3.1) (2023-12-01)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.3.0...v4.3.1)
+
+### Fixed
+
+- document multi-line strings [\#146](https://github.com/OSC/puppet-module-openondemand/pull/146) ([johrstrom](https://github.com/johrstrom))
+
+## [v4.3.0](https://github.com/osc/puppet-module-openondemand/tree/v4.3.0) (2023-11-27)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.2.1...v4.3.0)
+
+### Added
+
+- Support new module dependencies [\#144](https://github.com/OSC/puppet-module-openondemand/pull/144) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Removed Nginx stage ondemand title default value [\#142](https://github.com/OSC/puppet-module-openondemand/pull/142) ([abujeda](https://github.com/abujeda))
+
+## [v4.2.1](https://github.com/osc/puppet-module-openondemand/tree/v4.2.1) (2023-10-06)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.2.0...v4.2.1)
+
+### Fixed
+
+- Fix nginx\_stage task to work on Python 3 [\#138](https://github.com/OSC/puppet-module-openondemand/pull/138) ([treydock](https://github.com/treydock))
+
+## [v4.2.0](https://github.com/osc/puppet-module-openondemand/tree/v4.2.0) (2023-09-19)
+
+[Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.1.0...v4.2.0)
+
+### Added
+
+- Refactor how cluster YAML is generated to stop using ERB template [\#137](https://github.com/OSC/puppet-module-openondemand/pull/137) ([treydock](https://github.com/treydock))
+
 ## [v4.1.0](https://github.com/osc/puppet-module-openondemand/tree/v4.1.0) (2023-06-16)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v4.0.0...v4.1.0)
@@ -142,93 +271,41 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.7.0...v2.8.0)
 
-### Added
-
-- Support nightly repos [\#66](https://github.com/OSC/puppet-module-openondemand/pull/66) ([treydock](https://github.com/treydock))
-
 ## [v2.7.0](https://github.com/osc/puppet-module-openondemand/tree/v2.7.0) (2021-08-09)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.6.0...v2.7.0)
-
-### Added
-
-- Add nginx\_stage\_nginx\_file\_upload\_max and nginx\_stage\_configs [\#65](https://github.com/OSC/puppet-module-openondemand/pull/65) ([treydock](https://github.com/treydock))
 
 ## [v2.6.0](https://github.com/osc/puppet-module-openondemand/tree/v2.6.0) (2021-08-03)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.5.0...v2.6.0)
 
-### Added
-
-- Support cluster custom\_config [\#63](https://github.com/OSC/puppet-module-openondemand/pull/63) ([treydock](https://github.com/treydock))
-
 ## [v2.5.0](https://github.com/osc/puppet-module-openondemand/tree/v2.5.0) (2021-07-29)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.4.1...v2.5.0)
-
-### Added
-
-- Support K8 auto\_supplemental\_groups [\#62](https://github.com/OSC/puppet-module-openondemand/pull/62) ([treydock](https://github.com/treydock))
 
 ## [v2.4.1](https://github.com/osc/puppet-module-openondemand/tree/v2.4.1) (2021-07-21)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.4.0...v2.4.1)
 
-### Fixed
-
-- Ensure sudo rpmnew and rpmsave are removed in idempotent fasion [\#61](https://github.com/OSC/puppet-module-openondemand/pull/61) ([treydock](https://github.com/treydock))
-
 ## [v2.4.0](https://github.com/osc/puppet-module-openondemand/tree/v2.4.0) (2021-07-14)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.3.0...v2.4.0)
-
-### Added
-
-- Ensure kubectl sudo commands are not logged [\#60](https://github.com/OSC/puppet-module-openondemand/pull/60) ([treydock](https://github.com/treydock))
 
 ## [v2.3.0](https://github.com/osc/puppet-module-openondemand/tree/v2.3.0) (2021-06-15)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.2.0...v2.3.0)
 
-### Added
-
-- Support nginx\_stage passenger\_pool\_idle\_time and passenger\_options [\#58](https://github.com/OSC/puppet-module-openondemand/pull/58) ([treydock](https://github.com/treydock))
-
 ## [v2.2.0](https://github.com/osc/puppet-module-openondemand/tree/v2.2.0) (2021-06-03)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.1.0...v2.2.0)
-
-### Added
-
-- Support pinned apps, dashboard layout and ondemand.d configuration files [\#55](https://github.com/OSC/puppet-module-openondemand/pull/55) ([treydock](https://github.com/treydock))
 
 ## [v2.1.0](https://github.com/osc/puppet-module-openondemand/tree/v2.1.0) (2021-05-26)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v2.0.0...v2.1.0)
 
-### Added
-
-- Better cluster batch\_connect support, add ssh\_allow support [\#53](https://github.com/OSC/puppet-module-openondemand/pull/53) ([treydock](https://github.com/treydock))
-
 ## [v2.0.0](https://github.com/osc/puppet-module-openondemand/tree/v2.0.0) (2021-05-19)
 
 [Full Changelog](https://github.com/osc/puppet-module-openondemand/compare/v1.5.0...v2.0.0)
-
-### Changed
-
-- Drop Puppet 5 support, update dependency version ranges [\#50](https://github.com/OSC/puppet-module-openondemand/pull/50) ([treydock](https://github.com/treydock))
-- Support OnDemand 2.0 and Puppet 7 [\#46](https://github.com/OSC/puppet-module-openondemand/pull/46) ([treydock](https://github.com/treydock))
-
-### Added
-
-- Depend on EPEL for OnDemand 2.0 on EL7 [\#52](https://github.com/OSC/puppet-module-openondemand/pull/52) ([treydock](https://github.com/treydock))
-- Support hook.env [\#51](https://github.com/OSC/puppet-module-openondemand/pull/51) ([treydock](https://github.com/treydock))
-- Add tasks [\#48](https://github.com/OSC/puppet-module-openondemand/pull/48) ([treydock](https://github.com/treydock))
-- Add support for Kubernetes cluster definition [\#44](https://github.com/OSC/puppet-module-openondemand/pull/44) ([treydock](https://github.com/treydock))
-
-### Fixed
-
-- No longer set rh-ruby27 in Apache SCL, no longer needed [\#49](https://github.com/OSC/puppet-module-openondemand/pull/49) ([treydock](https://github.com/treydock))
 
 
 

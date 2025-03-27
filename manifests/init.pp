@@ -6,10 +6,16 @@
 #   The baseurl prefix for OnDemand repo
 # @param repo_gpgkey
 #   The URL for OnDemand repo GPG key
+# @param repo_gpgcheck
+#   Boolean to enable or disable the GPG check for the OnDemand repo. Defaults to enabled
+# @param repo_repogpgcheck
+#    Boolean to enable or disable the repo GPG check for the OnDemand repo. Defaults to enabled
 # @param repo_proxy
 #   The URL for proxy for OnDemand repo
 # @param repo_priority
 #   The priority of the OnDemand repo
+# @param repo_module_hotfixes
+#   The module_hotfixes of the OnDemand repo
 # @param repo_exclude
 #   Exclusion for OnDemand repo
 # @param manage_dependency_repos
@@ -32,8 +38,8 @@
 #   Hash of apps to install, passed to ondemand::install::app
 # @param declare_apache
 #   Boolean that determines if apache is declared or included
-# @param apache_scls
-#   SCLs to load when starting Apache service
+# @param apache_user
+#   Name of the Apache user
 # @param generator_insecure
 #   Run ood-portal-generator with --insecure flag
 #   This is needed if you wish to use default ood@localhost user or
@@ -48,10 +54,14 @@
 #   ood_porta.yml server_aliases
 # @param ssl
 #   ood_portal.yml ssl
+# @param disable_logs
+#   ood_portal.yml disable_logs
 # @param logroot
 #   ood_portal.yml logroot
 # @param use_rewrites
 #   ood_portal.yml use_rewrites
+# @param http_redirect_host
+#   ood_portal.yml http_redirect_host
 # @param use_maintenance
 #   ood_portal.yml use_maintenance
 # @param maintenance_ip_allowlist
@@ -60,6 +70,8 @@
 #   Source for maintenance index.html
 # @param maintenance_content
 #   Content for maintenance index.html
+# @param maintenance_enabled
+#   Enable maintenance mode in OOD
 # @param security_csp_frame_ancestors
 #   ood_portal.yml security_csp_frame_ancestors
 # @param security_strict_transport
@@ -80,6 +92,10 @@
 #   ood_portal.yml auth_type
 # @param auth_configs
 #   ood_portal.yml auth_configs
+# @param custom_vhost_directives
+#   ood_portal.yml custom_vhost_directives
+# @param custom_location_directives
+#   ood_portal.yml custom_location_directives
 # @param root_uri
 #   ood_portal.yml root_uri
 # @param analytics
@@ -130,6 +146,8 @@
 #   OIDC REMOTE_USER claim
 # @param oidc_scope
 #   OIDC scopes
+# @param oidc_crypto_passphrase
+#   OIDC crypto passphrase
 # @param oidc_session_inactivity_timeout
 #   OIDC session inactivity timeout, see OIDCSessionInactivityTimeout
 # @param oidc_session_max_duration
@@ -163,8 +181,6 @@
 #   nginx_stage.yml pun_custom_env
 # @param nginx_stage_app_root
 #   nginx_stage.yml app_root
-# @param nginx_stage_scl_env
-#   nginx_stage.yml scl_env
 # @param nginx_stage_app_request_regex
 #   nginx_stage.yml app_request_regex
 # @param nginx_stage_min_uid
@@ -235,18 +251,23 @@
 #   Source for aouncements config, not used if `apps_config_repo` is defined
 # @param public_files_repo_paths
 #   Path to public files in apps config Git repo
+# @param public_files_source_paths
+#   Path to the source for public files
 # @param manage_logrotate
 #   Boolean that allows disabling management of logrotate
 #
 class openondemand (
   # repos
-  String $repo_release = '3.0',
+  String $repo_release = '4.0',
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
   $repo_baseurl_prefix = 'https://yum.osc.edu/ondemand',
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Stdlib::Absolutepath]
   $repo_gpgkey = 'https://yum.osc.edu/ondemand/RPM-GPG-KEY-ondemand-SHA512',
+  Variant[Boolean, Enum['1','0', 'yes', 'no']] $repo_gpgcheck = '1',
+  Variant[Boolean, Enum['1','0', 'yes', 'no']] $repo_repogpgcheck = '1',
   Optional[String[1]] $repo_proxy = undef,
   Integer[1,99] $repo_priority = 99,
+  Optional[Boolean] $repo_module_hotfixes = undef,
   String $repo_exclude = 'absent',
   Boolean $manage_dependency_repos = true,
   Boolean $manage_epel = true,
@@ -262,7 +283,7 @@ class openondemand (
 
   # Apache
   Boolean $declare_apache = true,
-  String $apache_scls = 'httpd24',
+  String[1] $apache_user = 'apache',
 
   # ood_portal.yml
   Boolean $generator_insecure = false,
@@ -271,12 +292,15 @@ class openondemand (
   Optional[String] $proxy_server = undef,
   Optional[Array] $server_aliases = undef,
   Optional[Array] $ssl = undef,
+  Boolean $disable_logs = false,
   String  $logroot = 'logs',
   Boolean $use_rewrites = true,
+  String $http_redirect_host = '%{HTTP_HOST}',
   Boolean $use_maintenance = true,
   Array $maintenance_ip_allowlist = [],
   Optional[String] $maintenance_source = undef,
   Optional[String] $maintenance_content = undef,
+  Optional[Boolean] $maintenance_enabled = undef,
   Optional[Variant[String, Boolean]] $security_csp_frame_ancestors = undef,
   Boolean $security_strict_transport = true,
   String $lua_root = '/opt/ood/mod_ood_proxy/lib',
@@ -287,12 +311,14 @@ class openondemand (
   Optional[String] $map_fail_uri = undef,
   Variant[Enum['CAS', 'openid-connect', 'mellon', 'shibboleth', 'dex'], String[1]] $auth_type = 'dex',
   Optional[Array] $auth_configs = undef,
+  Array $custom_vhost_directives = [],
+  Array $custom_location_directives = [],
   String $root_uri = '/pun/sys/dashboard',
   Optional[Struct[{ url => String, id => String }]] $analytics = undef,
   String $public_uri = '/public',
   String $public_root = '/var/www/ood/public',
-  String $logout_uri = '/logout',
-  String $logout_redirect = '/pun/sys/dashboard/logout',
+  Variant[String[1], Undef] $logout_uri = '/logout',
+  Variant[String[1], Undef] $logout_redirect = '/pun/sys/dashboard/logout',
   String $host_regex = '[^/]+',
   Optional[String] $node_uri = undef,
   Optional[String] $rnode_uri = undef,
@@ -314,6 +340,7 @@ class openondemand (
   Optional[String] $oidc_client_secret = undef,
   String $oidc_remote_user_claim = 'preferred_username',
   String $oidc_scope = 'openid profile email',
+  Optional[String] $oidc_crypto_passphrase = undef,
   Integer $oidc_session_inactivity_timeout = 28800,
   Integer $oidc_session_max_duration = 28800,
   String $oidc_state_max_number_of_cookies = '10 true',
@@ -345,10 +372,9 @@ class openondemand (
   # nginx_stage configs
   String $nginx_stage_clean_cron_schedule = '0 */2 * * *',
   String $nginx_stage_ondemand_portal = 'ondemand',
-  String $nginx_stage_ondemand_title  = 'Open OnDemand',
+  Optional[String] $nginx_stage_ondemand_title  = undef,
   Hash $nginx_stage_pun_custom_env = {},
   Openondemand::Nginx_stage_namespace_config $nginx_stage_app_root  = {},
-  String $nginx_stage_scl_env = 'ondemand',
   Optional[Openondemand::Nginx_stage_namespace_config] $nginx_stage_app_request_regex = undef,
   Integer $nginx_stage_min_uid = 1000,
   Integer $nginx_stage_passenger_pool_idle_time = 300,
@@ -394,6 +420,7 @@ class openondemand (
   Optional[String] $locales_config_source = undef,
   Optional[String] $announcements_config_source = undef,
   Array $public_files_repo_paths = [],
+  Array $public_files_source_paths = [],
 
   # Disable functionality
   Boolean $manage_logrotate = true,
@@ -402,16 +429,23 @@ class openondemand (
   $osname = $facts.dig('os', 'name')
   $osmajor = $facts.dig('os', 'release', 'major')
 
-  $supported = ['RedHat-7','RedHat-8','RedHat-9','Debian-20.04','Debian-22.04']
+  $supported = ['RedHat-8','RedHat-9','RedHat-2023','Debian-20.04','Debian-22.04','Debian-24.04','Debian-12']
   $os = "${osfamily}-${osmajor}"
   if ! ($os in $supported) {
     fail("Unsupported OS: module ${module_name}. osfamily=${osfamily} osmajor=${osmajor} detected")
   }
 
-  if versioncmp($osmajor, '7') <= 0 {
-    $scl_apache = true
+  if $repo_release == '3.1' {
+    # Debian 12 and Ubuntu 24.04 in OnDemand 3.1 use OS NodeJS
+    if (String($openondemand::osmajor) in ['12', '24.04']) {
+      $nodejs = undef
+    } else {
+      $nodejs = '18'
+    }
+    $ruby = '3.1'
   } else {
-    $scl_apache = false
+    $nodejs = '20'
+    $ruby = '3.3'
   }
 
   if $selinux {
@@ -420,9 +454,17 @@ class openondemand (
     $selinux_package_ensure = 'absent'
   }
 
+  if $facts['os']['name'] == 'Amazon' {
+    $dist = 'amzn'
+  } elsif $osfamily == 'RedHat' {
+    $dist = 'el'
+  } else {
+    $dist = undef
+  }
+
   if $osfamily == 'RedHat' {
-    $repo_baseurl = "${repo_baseurl_prefix}/${repo_release}/web/el${osmajor}/\$basearch"
-    $repo_nightly_baseurl = "${repo_baseurl_prefix}/nightly/web/el${osmajor}/\$basearch"
+    $repo_baseurl = "${repo_baseurl_prefix}/${repo_release}/web/${dist}${osmajor}/\$basearch"
+    $repo_nightly_baseurl = "${repo_baseurl_prefix}/nightly/web/${dist}${osmajor}/\$basearch"
   } elsif $osfamily == 'Debian' {
     $repo_baseurl = "${repo_baseurl_prefix}/${repo_release}/web/apt"
     $repo_nightly_baseurl = "${repo_baseurl_prefix}/nightly/web/apt"
@@ -499,8 +541,10 @@ class openondemand (
     'server_aliases'                   => $server_aliases,
     'port'                             => $port,
     'ssl'                              => $ssl,
+    'disable_logs'                     => $disable_logs,
     'logroot'                          => $logroot,
     'use_rewrites'                     => $use_rewrites,
+    'http_redirect_host'               => $http_redirect_host,
     'use_maintenance'                  => $use_maintenance,
     'maintenance_ip_allowlist'         => $maintenance_ip_allowlist,
     'security_csp_frame_ancestors'     => $security_csp_frame_ancestors,
@@ -513,6 +557,8 @@ class openondemand (
     'map_fail_uri'                     => $map_fail_uri,
     'pun_stage_cmd'                    => $pun_stage_cmd,
     'auth'                             => $auth,
+    'custom_vhost_directives'          => $custom_vhost_directives,
+    'custom_location_directives'       => $custom_location_directives,
     'root_uri'                         => $root_uri,
     'analytics'                        => $analytics,
     'public_uri'                       => $public_uri,
@@ -538,6 +584,7 @@ class openondemand (
     'oidc_client_secret'               => $oidc_client_secret,
     'oidc_remote_user_claim'           => $oidc_remote_user_claim,
     'oidc_scope'                       => $oidc_scope,
+    'oidc_crypto_passphrase'           => $oidc_crypto_passphrase,
     'oidc_session_inactivity_timeout'  => $oidc_session_inactivity_timeout,
     'oidc_session_max_duration'        => $oidc_session_max_duration,
     'oidc_state_max_number_of_cookies' => $oidc_state_max_number_of_cookies,
@@ -545,7 +592,7 @@ class openondemand (
     'dex_uri'                          => $dex_uri,
     'dex'                              => $_dex_config,
   }.filter |$key, $value| { $value =~ NotUndef }
-  $ood_portal_yaml = to_yaml($ood_portal_config)
+  $ood_portal_yaml = stdlib::to_yaml($ood_portal_config)
   $base_apps = {
     'dashboard' => { 'package' => 'ondemand', 'manage_package' => false },
     'shell' => { 'package' => 'ondemand', 'manage_package' => false },
@@ -566,7 +613,8 @@ class openondemand (
   if $osfamily == 'RedHat' {
     contain openondemand::repo::rpm
     Class['openondemand::repo::rpm'] -> Class['openondemand::install']
-  } elsif $osfamily == 'Debian' {
+  }
+  if $osfamily == 'Debian' {
     contain openondemand::repo::apt
     Class['openondemand::repo::apt'] -> Class['openondemand::install']
   }

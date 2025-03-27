@@ -94,6 +94,19 @@ class openondemand::config {
     mode   => '0755',
   }
 
+  if $openondemand::maintenance_enabled {
+    $maintenance_enable_ensure = 'file'
+  } else {
+    $maintenance_enable_ensure = 'absent'
+  }
+
+  file { '/etc/ood/maintenance.enable':
+    ensure => $maintenance_enable_ensure,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
   file { '/etc/ood/config':
     ensure => 'directory',
     owner  => 'root',
@@ -187,6 +200,17 @@ class openondemand::config {
       mode    => '0644',
       source  => "/opt/ood-apps-config/${path}",
       require => $openondemand::_public_files_require,
+    }
+  }
+
+  $openondemand::public_files_source_paths.each |$path| {
+    $basename = basename($path)
+    file { "${openondemand::public_root}/${basename}":
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => $path,
     }
   }
 
@@ -332,12 +356,12 @@ class openondemand::config {
     }
   }
 
+  # TODO: Add back once better way to customize this file
   file { '/etc/ood/profile':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('openondemand/profile.erb'),
+    ensure => 'absent',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
   }
 
   sudo::conf { 'ood':
