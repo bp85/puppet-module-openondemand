@@ -19,7 +19,9 @@ Manage [Open OnDemand](http://openondemand.org/) installation and configuration.
 
 The following are the versions of this module and the supported versions of Open OnDemand:
 
-* Module 3.x and 4.x supports Open OnDemand 3.x
+* Module 7.x supports OnDemand 4.0 and 3.1
+* Module 5.x and 6.x supports Open OnDemand 3.1 and 3.0
+* Module 3.x and 4.x supports Open OnDemand 3.0
 * Module 2.x supports Open OnDemand 2.x
 * Module 1.x supports Open OnDemand 1.18.x
 * Module <= 0.12.0 supports Open OnDemand <= 1.7
@@ -33,12 +35,12 @@ All configuration can be done through the `openondemand` class. Example configur
 include openondemand
 ```
 
-Install specific versions of OnDemand from 3.0 repo with OpenID Connect support.
+Install specific versions of OnDemand from 3.1 repo with OpenID Connect support.
 
 ```yaml
-openondemand::repo_release: '3.0'
-openondemand::ondemand_package_ensure: "3.0.0-1.el7"
-openondemand::mod_auth_openidc_ensure: "3.4.5-1.el7"
+openondemand::repo_release: '3.1'
+openondemand::ondemand_package_ensure: "3.1.0-1.el9"
+openondemand::mod_auth_openidc_ensure: "3.4.5-1.el9"
 ```
 
 Configure OnDemand SSL certs
@@ -55,8 +57,6 @@ If you already declare the apache class you may wish to only include apache in t
 
 ```yaml
 openondemand::declare_apache: false
-apache::version::scl_httpd_version: '2.4'
-apache::version::scl_php_version: '7.0'
 apache::default_vhost: false
 ```
 
@@ -184,9 +184,14 @@ openondemand::clusters:
     job_version: '6.0.1'
     batch_connect:
       basic:
-        script_wrapper: 'module restore\n%s'
+        script_wrapper: |
+          module restore
+          %s
       vnc:
-        script_wrapper: 'module restore\nmodule load ondemand-vnc\n%s'
+        script_wrapper: |
+          module restore
+          module load ondemand-vnc
+          %s
 ```
 
 Define a Linux Host Adapter cluster:
@@ -212,7 +217,10 @@ openondemand::clusters:
     job_tmux_bin: /usr/bin/tmux
     batch_connect:
       vnc:
-        script_wrapper: 'module restore\nmodule load ondemand-vnc\n%s'
+        script_wrapper: |
+          module restore
+          module load ondemand-vnc
+          %s
 ```
 
 Define a Kubernetes cluster:
@@ -363,7 +371,9 @@ openondemand::confs:
 This module has been tested on:
 
 * RedHat/CentOS 7 x86_64
-* RedHat/Rocky Linux/Alma Linux 8 x86_64
-* RedHat/Rocky Linux/Alma Linux 9 x86_64
-* Ubuntu 18.04 x86_64
-* Ubuntu 20.04 x86_64
+* RedHat/Rocky Linux/Alma Linux 8
+* RedHat/Rocky Linux/Alma Linux 9
+* Amazon Linux 2023
+* Ubuntu 20.04
+* Ubuntu 22.04
+* Debian 12

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'openondemand::cluster' do
   on_supported_os(supported_os: [{ 'operatingsystem' => 'RedHat', 'operatingsystemrelease' => ['8'] }]).each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) do
         facts
       end
@@ -19,21 +19,21 @@ describe 'openondemand::cluster' do
             {
               'adapter' => 'group',
               'groups' => ['test-group'],
-              'type' => 'whitelist'
-            }
+              'type' => 'whitelist',
+            },
           ],
           rsv_query_acls: [
             {
               'adapter' => 'group',
               'groups' => ['test-group-rsv'],
-              'type' => 'blacklist'
-            }
+              'type' => 'blacklist',
+            },
           ],
           login_host: 'login.test',
           batch_connect: {
             'basic' => { 'script_wrapper' => 'module restore\n%s' },
-            'vnc' => { 'script_wrapper' => 'module restore\nmodule load ondemand-vnc\n%s' }
-          }
+            'vnc' => { 'script_wrapper' => 'module restore\nmodule load ondemand-vnc\n%s' },
+          },
         }
       end
 
@@ -43,7 +43,7 @@ describe 'openondemand::cluster' do
         is_expected.to contain_file('/etc/ood/config/clusters.d/test.yml').with('ensure' => 'file',
                                                                                 'owner' => 'root',
                                                                                 'group' => 'root',
-                                                                                'mode' => '0644')
+                                                                                'mode' => '0644',)
       end
 
       it do
@@ -62,10 +62,10 @@ describe 'openondemand::cluster' do
             job_username_prefix: 'dev',
             job_server: { 'endpoint' => 'https://k8dev.example.com:6443', 'cert_authority_file' => '/etc/k8dev.crt' },
             job_mounts: [
-              { 'name' => 'home', 'destination_path' => '/home', 'path' => '/home', 'host_type' => 'Directory', 'type' => 'host' }
+              { 'name' => 'home', 'destination_path' => '/home', 'path' => '/home', 'host_type' => 'Directory', 'type' => 'host' },
             ],
             job_auth: { 'type' => 'oidc' },
-            batch_connect: { 'ssh_allow' => false }
+            batch_connect: { 'ssh_allow' => false },
           }
         end
 
@@ -87,7 +87,15 @@ describe 'openondemand::cluster' do
               foo_string: 'bar',
               foo_bool: false,
               foo_array: ['1', '2', 3],
-              foo_hash: { 'foo' => 'bar', 'bar' => 'baz', 'baz' => false }
+              foo_hash: { 'foo' => 'bar', 'bar' => 'baz', 'baz' => false },
+              classrooms: {
+                jupyter: {
+                  AI_BOOTCAMP_OSC: {
+                    hours: 3,
+                    project: 'FOO',
+                  },
+                },
+              },
             },
           )
         end
@@ -96,11 +104,15 @@ describe 'openondemand::cluster' do
 
         it 'hash valid custom config' do
           content = catalogue.resource('file', '/etc/ood/config/clusters.d/test.yml').send(:parameters)[:content]
+          puts content
           data = YAML.safe_load(content)
           expect(data['v2']['custom']['foo_string']).to eq('bar')
           expect(data['v2']['custom']['foo_bool']).to eq(false)
           expect(data['v2']['custom']['foo_array']).to eq(['1', '2', 3])
           expect(data['v2']['custom']['foo_hash']).to eq('foo' => 'bar', 'bar' => 'baz', 'baz' => false)
+          expect(data['v2']['custom'].key?('classrooms')).to eq(true)
+          expect(data['v2']['custom']['classrooms'].key?('jupyter')).to eq(true)
+          expect(data['v2']['custom'].dig('classrooms', 'jupyter', 'AI_BOOTCAMP_OSC', 'hours')).to eq(3)
         end
       end
 
@@ -131,7 +143,7 @@ describe 'openondemand::cluster' do
               grafana_dashboard_name: 'test',
               grafana_dashboard_uid: 'foo',
               grafana_dashboard_panels: { 'cpu' => 1, 'memory' => 2 },
-              grafana_labels: { 'cluster' => 'cluster', 'host' => 'host' }
+              grafana_labels: { 'cluster' => 'cluster', 'host' => 'host' },
             }
           end
 

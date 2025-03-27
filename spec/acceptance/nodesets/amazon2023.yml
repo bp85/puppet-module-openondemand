@@ -1,22 +1,21 @@
 HOSTS:
-  el9:
+  amazon-2023:
     roles:
       - agent
-    platform: el-9-x86_64
+    platform: amazon-2023-x86_64
     hypervisor: docker
-    image: rockylinux:9
+    image: amazonlinux:2023
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'dnf install -y dnf-utils'
-      - 'dnf config-manager --set-enabled crb'
       - 'dnf install -y wget which cronie iproute initscripts langpacks-en glibc-all-langpacks glibc-langpack-en cpio'
     docker_env:
       - LANG=en_US.UTF-8
       - LANGUAGE=en_US.UTF-8
       - LC_ALL=en_US.UTF-8
-    docker_container_name: 'openondemand-el9'
+    docker_container_name: 'openondemand-amazon2023'
     default_module_install_opts:
       ignore-dependencies: 
       force: 

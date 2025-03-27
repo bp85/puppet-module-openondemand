@@ -25,14 +25,29 @@ class openondemand::repo::apt {
     },
   }
 
-  apt::source { 'nodesource':
-    ensure   => 'present',
-    location => 'https://deb.nodesource.com/node_14.x',
-    repos    => 'main',
-    release  => $facts['os']['distro']['codename'],
-    key      => {
-      'id'     => '9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280',
-      'source' => 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key',
-    },
+  if $openondemand::nodejs == '18' {
+    apt::source { 'nodesource':
+      ensure   => 'present',
+      location => 'https://deb.nodesource.com/node_18.x',
+      repos    => 'main',
+      release  => 'nodistro',
+      key      => {
+        'id'     => '6F71F525282841EEDAF851B42F59B5F99B1BE0B4',
+        'source' => 'https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key',
+      },
+    }
+  }
+
+  if $openondemand::nodejs == '20' {
+    apt::source { 'nodesource':
+      ensure   => 'present',
+      location => 'https://deb.nodesource.com/node_20.x',
+      repos    => 'main',
+      release  => 'nodistro',
+      key      => {
+        'id'     => '6F71F525282841EEDAF851B42F59B5F99B1BE0B4',
+        'source' => 'https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key',
+      },
+    }
   }
 }
