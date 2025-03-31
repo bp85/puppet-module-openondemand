@@ -51,7 +51,7 @@ class openondemand::apache {
 
   case $openondemand::auth_type {
     'CAS': {
-      include ::apache::mod::auth_cas
+      include apache::mod::auth_cas
     }
     '(dex|openid-connect)': {
       ::apache::mod { 'auth_openidc':
