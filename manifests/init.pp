@@ -352,18 +352,8 @@ class openondemand (
 
   # Mellon Configs
   Stdlib::Absolutepath $mellon_dir = "${apache::httpd_dir}/mellon",
-  Blloean mellon_manage_metadata = true,
-  Optional[Hash] $mellon_default_config = {
-    'MellonSPPrivateKeyFile' => "${mellon_dir}/mellon.key",
-    'MellonSPCertFile' => "${mellon_dir}/mellon.cer",
-    'MellonSPMetadataFile' => "${mellon_dir}/mellon_metadata.xml",
-    'MellonIdPMetadataFile' => "${mellon_dir}/idp_metadata.xml",
-    'MellonEnable' => 'auth',
-    'MellonEndpointPath' => '/mellon',
-  },
+  Boolean mellon_manage_metadata = true,
   Optional[Hash] $mellon_config = {},
-  # Merge default config with updated configs
-  Optional[Hash] $mellon_merged_config = merge($mellon_default_config, $mellon_config),
 
   # Misc configs
   Stdlib::Absolutepath $web_directory = '/var/www/ood',
@@ -493,6 +483,18 @@ class openondemand (
     'dex': {
       $auth = undef
       $_dex_config = $dex_config
+    }
+    'mellon': {
+      $mellon_default_config = {
+        'MellonSPPrivateKeyFile' => "${mellon_dir}/mellon.key",
+        'MellonSPCertFile' => "${mellon_dir}/mellon.cer",
+        'MellonSPMetadataFile' => "${mellon_dir}/mellon_metadata.xml",
+        'MellonIdPMetadataFile' => "${mellon_dir}/idp_metadata.xml",
+        'MellonEnable' => 'auth',
+        'MellonEndpointPath' => '/mellon',
+      }
+      # Merge default config with updated configs
+      $mellon_merged_config = merge($mellon_default_config, $mellon_config)
     }
     default: {
       $auth = ["AuthType ${auth_type}"] + $auth_configs
