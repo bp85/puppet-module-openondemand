@@ -54,14 +54,14 @@ class openondemand::apache {
       include apache::mod::auth_cas
     }
     '(dex|openid-connect)': {
-      ::apache::mod { 'auth_openidc':
-        package        => "${package_prefix}mod_auth_openidc",
+      apache::mod { 'auth_openidc':
+        package        => $openidc_package,
         package_ensure => $openondemand::mod_auth_openidc_ensure,
       }
     }
     'mellon': {
-      ::apache::mod { 'auth_mellon':
-        package        => "${package_prefix}mod_auth_mellon",
+      apache::mod { 'auth_mellon':
+        package        => $auth_mellon_package,
         package_ensure => $openondemand::mod_auth_mellon_ensure,
       }
     }
